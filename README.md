@@ -29,9 +29,6 @@
 - Проект [ticket2.2](https://github.com/BosenkoTM/exam_prepare_icud_1_2_sem/tree/main#%D0%BF%D1%80%D0%BE%D0%B5%D0%BA%D1%82-ticket22).
  
 </details>
-
-## Текущая успеваемость
- [АДЭУ-201](https://docs.google.com/spreadsheets/d/1rldI1A9V3_WH9H8McTe3qNr6o0migXObak8nKQSQg-E/edit?usp=sharing)
  
 ## Лекция 1. Микросервисы и контейнеры
 [Лекция 1](/lectures/1%20-%20intro%20Применение%20контейнеров.pptx)

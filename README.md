@@ -79,14 +79,6 @@
 - `2024`. Начало в `9.15`. [Контейнеры](https://forms.gle/2k3z94t1wUXqfj776)
 ## ТЕСТ 2.  
 - `2024`. Начало в `9.15`. [Оркестрация данных](https://forms.gle/xp6uS8rVQ2v7hgdR8)
-## Семинары
-- Семинар `1`.  [Установка Docker](https://github.com/BosenkoTM/IC-UD_Practice/tree/main/1%20%D0%A3%D1%81%D1%82%D0%B0%D0%BD%D0%BE%D0%B2%D0%BA%D0%B0%20DOCKER#1-%D1%83%D1%81%D1%82%D0%B0%D0%BD%D0%BE%D0%B2%D0%BA%D0%B0-docker---ubuntu).
-- Семинар `2`.  [Первый контейнер](https://github.com/BosenkoTM/IC-UD_Practice/tree/main/2%20%D0%9F%D0%B5%D1%80%D0%B2%D1%8B%D0%B9%20%D0%BA%D0%BE%D0%BD%D1%82%D0%B5%D0%B9%D0%BD%D0%B5%D1%80#%D0%BF%D0%B5%D1%80%D0%B2%D1%8B%D0%B9-%D0%BA%D0%BE%D0%BD%D1%82%D0%B5%D0%B9%D0%BD%D0%B5%D1%80).
-- Семинар `3`.  [Создание образа](https://github.com/BosenkoTM/IC-UD_Practice/tree/main/3%20%D0%A1%D0%BE%D0%B7%D0%B4%D0%B0%D0%BD%D0%B8%D0%B5%20%D0%BE%D0%B1%D1%80%D0%B0%D0%B7%D0%B0#%D1%81%D0%BE%D0%B7%D0%B4%D0%B0%D0%BD%D0%B8%D0%B5-%D0%BE%D0%B1%D1%80%D0%B0%D0%B7%D0%B0).
-- Семинар `4`.  [Работа с файлами](https://github.com/BosenkoTM/IC-UD_Practice/tree/main/4%20%D0%A0%D0%B0%D0%B1%D0%BE%D1%82%D0%B0%20%D1%81%20%D1%84%D0%B0%D0%B9%D0%BB%D0%B0%D0%BC%D0%B8#%D1%80%D0%B0%D0%B1%D0%BE%D1%82%D0%B0-%D1%81-%D1%84%D0%B0%D0%B9%D0%BB%D0%B0%D0%BC%D0%B8---%D1%82%D0%B5%D0%BE%D1%80%D0%B8%D1%8F). Создание [TG-BOT 2022](https://github.com/BosenkoTM/tg_bot_2022.git).
-- Семинар `5`. [Веб-приложение в контейнерах](https://github.com/BosenkoTM/IC-UD_Practice/tree/main/7%20%D0%92%D0%B5%D0%B1-%D0%BF%D1%80%D0%B8%D0%BB%D0%BE%D0%B6%D0%B5%D0%BD%D0%B8%D0%B5%20%D0%B2%20%D0%BA%D0%BE%D0%BD%D1%82%D0%B5%D0%B9%D0%BD%D0%B5%D1%80%D0%B0%D1%85#%D1%80%D0%B0%D0%B1%D0%BE%D1%82%D0%B0-%D0%B2%D0%B5%D0%B1-%D0%BF%D1%80%D0%B8%D0%BB%D0%BE%D0%B6%D0%B5%D0%BD%D0%B8%D1%8F-%D1%81-%D0%BE%D0%B4%D0%BD%D0%B8%D0%BC-%D0%B8-%D0%B4%D0%B2%D1%83%D0%BC%D1%8F-%D0%B2%D0%B5%D0%B1-%D1%81%D0%B5%D1%80%D0%B2%D0%B5%D1%80%D0%B0%D0%BC%D0%B8).
-- Семинар `6`. [YAML и docker-compose](https://github.com/BosenkoTM/IC-UD_Practice/tree/main/8%20YAML%20%D0%B8%20docker-compose#yaml).
-- Семинар `7`. [Веб-приложение в docker-compose](https://github.com/BosenkoTM/IC-UD_Practice/tree/main/9%20%D0%92%D0%B5%D0%B1-%D0%BF%D1%80%D0%B8%D0%BB%D0%BE%D0%B6%D0%B5%D0%BD%D0%B8%D0%B5%20%D0%B2%20docker-compose#%D0%B8%D0%BD%D1%81%D1%82%D1%80%D1%83%D0%BA%D1%86%D0%B8%D0%B8-docker-compose).
 
 ## Основная литература
 1. Иан Милл, Эйдан Хобсон Сейерс Docker на практике / пер. с англ. Д. А. Беликов. – М.: ДМК Пресс, 2020. – 516 с. [скачать](https://disk.yandex.ru/d/mrcntkbTLAfHPQ).

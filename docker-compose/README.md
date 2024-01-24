@@ -16,7 +16,14 @@
 
 ## Практические работы
 
-Head over to [the first lab](labs/00-getting-started.md) to begin.
+- [Введение](labs/00-getting-started.md).
+- Практическое задание 1.  [Запуск команд с помощью Docker](https://github.com/BosenkoTM/UC-WD/blob/main/docker-compose/labs/01-hello-world.md).
+- Практическое задание 2. [Запуск контейнера из образа](https://github.com/BosenkoTM/UC-WD/blob/main/docker-compose/labs/02-running-images.md).
+- Практическое задание 3. [Сборка контейнера](https://github.com/BosenkoTM/UC-WD/blob/main/docker-compose/labs/03-deletion.md).
+- Практическое задание 4. [Проектирование веб-сервера](https://github.com/BosenkoTM/UC-WD/blob/main/docker-compose/labs/04-port-forward.md).
+- Практическое задание 5. [Запуск и выполнение процессов в контейнере](https://github.com/BosenkoTM/UC-WD/blob/main/docker-compose/labs/05-executing.md).
+- Практическое задание 6. [Запуск контейнера из образа]().
+- Практическое задание 7. [Запуск контейнера из образа]().
 
 ## Шпаргалка
 

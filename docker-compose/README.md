@@ -6,32 +6,20 @@
 
 [![Упражнения в Cloud Shell](https://gstatic.com/cloudssh/images/open-btn.svg)](https://console.cloud.google.com/cloudshell/editor?cloudshell_git_repo=https://github.com/BosenkoTM/UC-WD.git)
 
-## Prerequisites
+## Предварительные условия
 
-You need to have access to a machine with docker installed.
-There are many ways of getting that:
-* Click the link above to get a Cloud shell from Google (require login)
-* Docker installed on a linux box. 
-* Docker desktop installed on a Mac or Windows machine.
+Вам необходимо иметь доступ к машине с установленным докером.
+Есть много способов получить это:
+* Нажмите ссылку выше, чтобы получить облачную оболочку от Google (требуется вход в систему).
+* Docker установлен на Linux-системе.
+* Рабочий стол Docker, установленный на компьютере Linux, Mac или Windows.
 
-## Philosophy
-
-
-There are a few things you should know about this tutorial before we begin.
-
-This tutorial is designed to be **self-paced** to make the most of your time.
-
-The exercises won't always tell you exactly what you need to do.
-
-Instead, it will point you to the right resources (like documentation and blog posts) to find the answer.
-
-Ready to begin?
----------------
+## Практические работы
 
 Head over to [the first lab](labs/00-getting-started.md) to begin.
 
-## Cheat sheet
+## Шпаргалка
 
-For a quick reference of the most common docker commands, see [CHEATSHEET.md](CHEATSHEET.md).
+Краткую информацию о наиболее распространенных командах `Docker` [CHEATSHEET.md](CHEATSHEET.md).
 
 

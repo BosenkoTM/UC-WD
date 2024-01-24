@@ -1,11 +1,10 @@
-# Docker katas
+# Docker Compose
 
-[![Open the exercises in Cloud Shell](https://gstatic.com/cloudssh/images/open-btn.svg)](https://console.cloud.google.com/cloudshell/editor?cloudshell_git_repo=https://github.com/eficode-academy/docker-katas.git)
+Упражнения в Cloud Shell.От «Hello Docker» к развертыванию контейнерного веб-приложения на сервере.
 
-This workshop will take you from "Hello Docker" to deploying a containerized web application to a server.
+## Docker в Cloud Shell
 
-It's going to be a lot of fun!
-
+[![Упражнения в Cloud Shell](https://gstatic.com/cloudssh/images/open-btn.svg)](https://console.cloud.google.com/cloudshell/editor?cloudshell_git_repo=https://github.com/BosenkoTM/UC-WD.git)
 
 ## Prerequisites
 

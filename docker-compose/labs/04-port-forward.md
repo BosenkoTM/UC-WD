@@ -1,68 +1,62 @@
 # Практическое задание 4. Проектирование веб-сервера.
 
-Running arbitrary Linux commands inside a Docker container is fun, but let's do something more useful.
+Скачать образ Docker `nginx` из Docker Hub. Этот образ Docker использует веб-сервер [Nginx](http://nginx.org/) для обслуживания статического HTML-сайта.
 
-Pull down the `nginx` Docker image from the Docker Hub. This Docker image uses the [Nginx](http://nginx.org/) webserver to serve a static HTML website.
+Запустите новый контейнер из образа `nginx`, который предоставляет порт 80 на хосте через порт контейнера 8080. Требуется использовать флаг `-p` с командой Docker-контейнера.
 
-Start a new container from the `nginx` image that exposes port 80 from the container to port 8080 on your host. You will need to use the `-p` flag with the docker container run command.
-
-> :bulb: Mapping ports between your host machine and your containers can get confusing.
-> Here is the syntax you will use:
+> :bulb: Сопоставление портов между хост-компьютером и контейнерами может сбить с толку.
+> Вот синтаксис, который можно использовать:
 >
 > ```
 > docker run -p 8080:80 nginx
 > ```
 >
-> The trick is to remember that **the host port always goes to the left**,
-> and **the container port always goes to the right.**
-> Remember it as traffic coming _from_ the host, _to_ the container.
+> Хитрость в том, чтобы помнить, что **хост-порт всегда идет слева**,
+> и **контейнерный порт всегда идет справа.**
+> Помните coming _from_ хост, _to_ контейнер.
 
-Open a web browser and go to port 8080 on your host. The exact address will depend on how you're running Docker today:
+Откройте веб-браузер и перейдите на порт 8080 на рабочем хосте. Точный адрес будет зависеть от того, как используется Docker:
 
-- **Native Linux** - [http://localhost:8080](http://localhost:8080)
-- **Google Cloud Shell** - Open Web Preview (upper right corner)
+- **Native Linux** - [http://localhost:8080](http://localhost:8080).
+– **Google Cloud Shell** – Открыть предварительный просмотр в Интернете (правый верхний угол).
 
-If you see a webpage saying "Welcome to nginx!" then you're done!
+Если видите веб-страницу с надписью «Welcome to nginx!» тогда все готово!
 
-If you look at the console output from docker, you see nginx producing a line of text for each time a browser hits the webpage:
+Если вы посмотрите на вывод консоли из Docker, будет видно, что nginx создает строку текста каждый раз, когда браузер заходит на веб-страницу:
 
 ```
 docker run -p 8080:80 nginx
 ```
 
-Expected output:
+Ожидаемый результат:
 
 ```
-172.17.0.1 - - [31/May/2017:11:52:48 +0000] "GET / HTTP/1.1" 200 612 "-" "Mozilla/5.0 (X11; Ubuntu; Linux x86_64; rv:53.0) Gecko/20100101 Firefox/53.0" "-
+172.17.0.1 - - [27/Jan/2024:22:38:27 +0000] "GET /?authuser=0&redirectedPreviously=true HTTP/1.1" 200 615 "https://ssh.cloud.google.com/" "Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/120.0.0.0 Safari/537.36" "-"
 ```
 
-Press **control + c** in your terminal window to stop your container.
+Нажмите **control + c** в окне терминала, чтобы остановить контейнер.
 
-## Running the webserver container in the background
+## Запуск контейнера веб-сервера в фоновом режиме
 
-When running a webserver like nginx, it is very useful to not run the container in the foreground of our terminal.
-Instead we should make it run in the background, freeing up our terminal for other things.
-Docker enables this with the `-d` parameter for the `run` command.
-For example: `docker run -d -p 8080:80 nginx`
+При запуске веб-сервера, такого как nginx, правильно не запускать контейнер на переднем плане нашего терминала.
+Вместо этого следует заставить его работать в фоновом режиме, освободив терминал для других задач.
+Docker включает это с помощью параметра `-d` для команды `run`.
+Например: `docker run -d -p 8080:80 nginx`
 
 ```
 docker run -p 8080:80 -d nginx
 ```
 
-Docker prints out the container ID and returns to the terminal.
+## Очистка
 
-Congratulations! You have just started a container in the background. :tada:
-
-## Cleanup
-
-Stop the container you just started.
-Remember that your container ID is different from the one in the example.
+Остановить контейнер, который  запустили.
+Помните, что идентификатор вашего контейнера отличается от приведенного в примере.
 
 ```bash
-docker stop 78c943461b49584ebdf841f36d113567540ae460387bbd7b2f885343e7ad7554
+docker stop 37a7e850f76bbad240a024427e66903f0d9d9543f0d7b2deb83f98d1ab62bb0c
 ```
-Docker prints out the ID of the stopped container.
+Docker выводит в консоль идентификатор остановленного контейнера.
 
 ```
-78c943461b49584ebdf841f36d113567540ae460387bbd7b2f885343e7ad7554
+37a7e850f76bbad240a024427e66903f0d9d9543f0d7b2deb83f98d1ab62bb0c
 ```

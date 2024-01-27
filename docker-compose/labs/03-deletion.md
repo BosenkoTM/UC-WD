@@ -145,7 +145,7 @@ docker image rm d2c94e258dcb
 Error response from daemon: conflict: unable to delete d2c94e258dcb (must be forced) - image is being used by stopped container a59b7f0cdf73
 
 ```
-Требуется использовать ключ --force для удаления образов, которые используются в виртуальном окружении.
+Требуется использовать ключ `--force` для удаления образов, которые используются в виртуальном окружении.
 
 ```
 docker rmi --force d2c94e258dcb
@@ -160,22 +160,18 @@ Deleted: sha256:48b5124b2768d2b917edcb640435044a97967015485e812545546cbed5cf0233
 Deleted: sha256:98c944e98de8d35097100ff70a31083ec57704be0991a92c51700465e4544d08
 ```
 
-### Cleaning up
+### Очистка
 
-When building, running and rebuilding images, you download and store a lot of layers. These layers will not be deleted, as docker takes a very conservative approach to clean up.
+При создании, запуске и восстановлении образов загружается и сохраняется множество слоев. Эти слои не будут удалены, поскольку докер использует очень консервативный подход к очистке.
 
-Docker provides a `prune` command, taking all dangling containers/images/networks/volumes.
+Docker предоставляет команду `prune`, забираем все зависшие контейнеры/изображения/сети/тома.
 
 - `docker container prune`
 - `docker image prune`
 - `docker network prune`
 - `docker volume prune`
 
-The docker image prune command allows you to clean up unused images. By default, docker image prune only cleans up dangling images. A dangling image is one that is not tagged and is not referenced by any container. To remove all _unused_ resources, resources that are not directly used by any existing containers, use the `-a` switch as well.
+Команда docker image prune позволяет очистить неиспользуемые изображения. По умолчанию `docker image prune` очищает только висячие изображения. Зависшиы образ — это компонент, который не помечен тегами и на который не ссылается какой-либо контейнер. 
 
-If you want a general cleanup, then `docker system prune` is your friend.
+Если требуется полная очистка, выполнить `docker system prune`.
 
-## Summary
-
-You have now seen the swiftness of creating a new container from an image, trash it, and create a new one on top of it.
-You have learned to use `container rm` for deleting containers, `image rm` for images, `image ls` for listing the images and `container ls -a` to look at all the containers on your host.

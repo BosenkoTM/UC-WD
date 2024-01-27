@@ -1,23 +1,23 @@
-# hello-world
+# Практическое задание 1. Запуск команд с помощью Docker.
 
-## Learning Goals
+## Цель
 
-The goal of this scenario is to make you run your first Docker container.
+Запустить свой первый контейнер Docker.
 
-## Terminology
+## Терминология
 
-*Docker Container*: An isolated, runnable environment that holds everything needed to run an application.
-*Docker Image*: A lightweight, standalone package that contains all necessary code, libraries, and dependencies to run an application.
+*Docker-контейнер*: изолированная работоспособная среда, содержащая все необходимое для запуска приложения.
+*Docker-образ*: легкий автономный пакет, содержащий весь необходимый код, библиотеки и зависимости для запуска приложения.
 
-## Exercise
+## Упражнение 1.1
 
-Try running a command with Docker:
+Запустить команду в Docker::
 
 ```
 docker run hello-world
 ```
 
-Your terminal output should look like this:
+Вывод терминала должен выглядеть следующим образом:
 
 ```
 Unable to find image 'hello-world:latest' locally
@@ -47,10 +47,8 @@ For more examples and ideas, visit:
  https://docs.docker.com/engine/userguide/
 ```
 
-This message shows that your installation appears to be working correctly.
+Это сообщение указывает на то, что установка  работает корректно.
 
-_*Q: So what did this do?*_
+Запустить снова  `docker run hello-world`.
 
-Try to run `docker run hello-world` again.
-
-Docker has now already downloaded the image locally, and can therefore execute the container straight away.
+Docker теперь уже загрузил образ локально и поэтому может сразу запустить контейнер..

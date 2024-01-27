@@ -4,7 +4,7 @@
 
 Запустить  контейнер `alpine` и удалить файловую систему.
 
-Запустите контейнер с помощью `docker run -ti alpine`, а затем подсчитать количество каталогов в корневом каталоге, чтобы увидеть весь дистрибутив:
+Запустите контейнер с помощью `docker run -ti alpine`, а затем провести анализ папок в корневом каталоге:
 
 ```
 ls /
@@ -82,7 +82,7 @@ CONTAINER ID   IMAGE         COMMAND                  CREATED             STATUS
 
 Это приведет к удалению контейнера сразу после его остановки.
 
-## Очистка контейнеров, которые вы больше не используете
+## Очистка контейнеров, которые больше не используются
 
 Контейнеры по-прежнему сохраняются, даже если они остановлены.
 Чтобы удалить их с сервера, использовать команду `docker rm`.
@@ -118,7 +118,7 @@ frosty_shockley
 
 ### Удаление изображений
 
-Удален экземпляр контейнера выше, но не сам образ hello-world. Удалим его.
+Удален экземпляр контейнера выше, но не сам образ hello-world. Удалить образ.
 
 Прежде всего, проверьте все образы, которые загружены в облачную среду:
 
@@ -126,22 +126,32 @@ frosty_shockley
 docker image ls
 ```
 
-Expected output:
+Ожидаемый результат:
 
 ```
-REPOSITORY                              TAG                   IMAGE ID            CREATED             SIZE
-alpine                                  latest                053cde6e8953        9 days ago          3.97MB
-hello-world                             latest                48b5124b2768        10 months ago       1.84kB
+REPOSITORY    TAG       IMAGE ID       CREATED        SIZE
+alpine        latest    05455a08881e   22 hours ago   7.38MB
+hello-world   latest    d2c94e258dcb   9 months ago   13.3kB
+```
+Здесь можно увидеть загруженные образы, а также их размер.
+Чтобы удалить образ hello-world, используйте команду `docker image rm` вместе с идентификатором образа docker.
+
+```
+docker image rm d2c94e258dcb
+```
+Ожидаемый результат:
+
+```
+Error response from daemon: conflict: unable to delete d2c94e258dcb (must be forced) - image is being used by stopped container a59b7f0cdf73
+
+```
+Требуется использовать ключ --force для удаления образов, которые используются в виртуальном окружении.
+
+```
+docker rmi --force d2c94e258dcb
 ```
 
-Here you can see the images downloaded as well as their size.
-To remove the hello-world image use the `docker image rm` command together with the id of the docker image.
-
-```
-docker image rm 48b5124b2768
-```
-
-Expected output:
+Ожидаемый результат:
 
 ```
 Untagged: hello-world:latest
@@ -149,8 +159,6 @@ Untagged: hello-world@sha256:c5515758d4c5e1e838e9cd307f6c6a0d620b5e07e6f927b07d0
 Deleted: sha256:48b5124b2768d2b917edcb640435044a97967015485e812545546cbed5cf0233
 Deleted: sha256:98c944e98de8d35097100ff70a31083ec57704be0991a92c51700465e4544d08
 ```
-
-What docker did here was to `untag` the image removing the references to the sha of the image. After the image has no references, it deletes the two layers the image itself is comprised of.
 
 ### Cleaning up
 

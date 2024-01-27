@@ -115,28 +115,15 @@ a59b7f0cdf73   hello-world   "/hello"                 45 minutes ago   Exited (0
 
 Выше вы видите список всех контейнеров, которые вы запускали. Обратите внимание, что в столбце `STATUS` показано, что эти контейнеры завершились несколько минут назад. 
 
-## Naming your container
+## Именование контейнера
 
-Take a look again at the output of the `docker ps -a`:
+Посмотрим еще раз на вывод `docker ps -a`:
 
 * `docker ps -a`
 
-Expected output:
+Все контейнеры имеют **ID** и **name**.  
 
-```
-CONTAINER ID        IMAGE               COMMAND                  CREATED             STATUS                      PORTS               NAMES
-36171a5da744        alpine              "/bin/sh"                5 minutes ago       Exited (0) 2 minutes ago                        fervent_newton
-a6a9d46d0b2f        alpine              "echo 'hello from alp"   6 minutes ago       Exited (0) 6 minutes ago                        lonely_kilby
-ff0a5c3750b9        alpine              "ls -l"                  8 minutes ago       Exited (0) 8 minutes ago                        elated_ramanujan
-c317d0a9e3d2        hello-world         "/hello"                 34 seconds ago      Exited (0) 12 minutes ago                       stupefied_mcclintock
-```
+И идентификатор, и имя генерируются каждый раз, когда создается новый контейнер со случайным начальным значением для обеспечения уникальности.
 
-All containers have an **ID** and a **name**. 
+> :bulb: Совет: Если хотите присвоить контейнеру определенное имя, можно использовать опцию `--name`. Это упростит обращение к контейнеру в дальнейшем. Чтобы узнать больше о `run`, используйте `docker run --help`.
 
-Both the ID and name is generated every time a new container spins up with a random seed for uniqueness.
-
-> :bulb: Tip: If you want to assign a specific name to a container then you can use the `--name` option. That can make it easier for you to reference the container going forward.
-
-## Summary
-
-That concludes a whirlwind tour of the `docker run` command which would most likely be the command you'll use most often. It makes sense to spend some time getting comfortable with it. To find out more about `run`, use `docker run --help` to see a list of all flags it supports. As you proceed further, we'll see a few more variants of `docker run`.

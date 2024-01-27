@@ -1,125 +1,119 @@
-# Running your first container from image
+# Практическое задание 2. Запуск контейнера из образа.
 
-## Learning Goals
-
-
-- Run an [Alpine Linux](http://www.alpinelinux.org/) container (a lightweight linux distribution) on your system and get a taste of the `docker run` command.
-
-## Introduction
-
-To get started with running your first container from an image, you'll first pull the Alpine Linux image, a lightweight Linux distribution, and then explore various commands to interact with it.
-
-## Exercise
-
-### Overview
-
-- Pull the Alpine Linux image.
-- List all images on your system.
-- Run a Docker container based on the Alpine image.
-- Explore various commands inside the container.
-- Understand container naming and IDs.
-
-### Step by step instructions
+## Цель
 
 
-To get started, let's run the following in our terminal:
+- Запустить [Alpine Linux](http://www.alpinelinux.org/) контейнер (облегчённый дистрибутив Linux) в вашей системе и проверьте команду `docker run`.
 
+## Введение
+
+Чтобы начать работу с первым контейнером из образа, сначала получите образ Alpine Linux, облегченный дистрибутив Linux, а затем изучите различные команды для взаимодействия с ним.
+
+## Упражнение 2.1
+
+### Задачи
+
+- Извлеките образ Alpine Linux.
+- Перечислите все образы в системе.
+— Запустите Docker-контейнер на основе образа Alpine.
+- Исследуйте различные команды внутри контейнера.
+- Изучите имена и идентификаторы контейнеров.
+
+Запустить в терминале следующие команды:
 * `docker pull alpine`
 
-The `pull` command fetches the alpine **image** from the **Docker registry** and saves it in your system. You can use the `docker image ls` command to see a list of all images on your system.
+Команда `pull` извлекает **образ** alpine из **реестра Docker** и сохраняет его в системе. Используйте команду `docker image ls`, чтобы просмотреть список всех изображений в вашей системе.
 
 * `docker image ls`
 
-Expected output (your list of images will look different):
+Ожидаемый результат (ваш список образов будет выглядеть иначе):
 
 ``` bash
-REPOSITORY              TAG                 IMAGE ID            CREATED             VIRTUAL SIZE
-alpine                  latest              c51f86c28340        4 weeks ago         1.109 MB
-hello-world             latest              690ed74de00f        5 months ago        960 B
+REPOSITORY    TAG       IMAGE ID       CREATED        SIZE
+alpine        latest    05455a08881e   21 hours ago   7.38MB
+hello-world   latest    d2c94e258dcb   9 months ago   13.3kB
 ```
 
-## 1.1 docker run
+## 1.1 запуск докера
 
-Let's run a Docker **container** based on this image.
+Запустить **контейнер** Docker на основе этого образа.
 
 * `docker run alpine ls -l`
 
-Expected output:
+Ожидаемый результат:
+
 
 ```bash
-total 48
-drwxr-xr-x    2 root     root          4096 Mar  2 16:20 bin
-drwxr-xr-x    5 root     root           360 Mar 18 09:47 dev
-drwxr-xr-x   13 root     root          4096 Mar 18 09:47 etc
-drwxr-xr-x    2 root     root          4096 Mar  2 16:20 home
-drwxr-xr-x    5 root     root          4096 Mar  2 16:20 lib
+total 56
+drwxr-xr-x    2 root     root          4096 Jan 26 17:53 bin
+drwxr-xr-x    5 root     root           340 Jan 27 21:07 dev
+drwxr-xr-x    1 root     root          4096 Jan 27 21:07 etc
+drwxr-xr-x    2 root     root          4096 Jan 26 17:53 home
 ......
 ......
 ```
+Когда запускаем `docker run alpine`, используется ключ (`ls -l`), поэтому Docker запускает указанную команду, и в результате видим каталоги с правами доступа.
 
-When you run `docker run alpine`, you provided a command (`ls -l`), so Docker started the command specified and you saw the listing.
+Запустить команду:
 
-Try run the following:
+* `docker run alpine echo "привет от Alpine"`
 
-* `docker run alpine echo "hello from alpine"`
-
-Expected output:
+Ожидаемый результат:
 
 ``` bash
-hello from alpine
+привет от Alpine
 ```
 
 <details>
 <summary>More Details</summary>
 In this case, the Docker client ran the `echo` command in our alpine container and then exited it. If you've noticed, all of that happened pretty quickly. Imagine booting up a virtual machine, running a command and then killing it. Now you know why they say containers are fast!
 
+В этом случае клиент Docker выполнил команду `echo` в контейнере Alpine, а затем вышел из него. Если заметили, все это произошло довольно быстро. Представьте, что загружаете виртуальную машину, запускаете команду, а затем удаляете ее. Контейнеры — это быстро!
 </details>
 
-Try another command:
+Запустить команду:
 
 * `docker run alpine /bin/sh`
 
-Wait, nothing happened! Is that a bug? 
+Эти интерактивные оболочки завершатся после выполнения любых команд сценария, если только они не будут запущены в интерактивном терминале - поэтому, чтобы этот пример не завершался, необходимо добавить параметры `i` и `t`. 
 
-Well, no. 
-
-These interactive shells will exit after running any scripted commands, unless they are run in an interactive terminal - so for this example to not exit, you need to add the parameters `i` and `t`.
-
-> :bulb: The flags `-it` are short for `-i -t` which again are the short forms of `--interactive` (Keep STDIN open) and  `--tty` (Allocate a terminal).
+> :bulb: Флаги `-it` являются сокращением от `-i -t`, которые опять же являются короткими формами `--interactive` (держать STDIN открытым) и `--tty` (изолировать терминал). 
 
 * `docker run -it alpine /bin/sh`
 
-You are inside the container shell and you can try out a few commands like `ls -l`, `uname -a` and others. 
+Вы находитесь внутри оболочки контейнера и можете опробовать несколько команд, таких как `ls -l`, `uname -a` и другие.
 
-* Exit out of the container by giving the `exit` command.
+* Выйдите из контейнера, используя команду `exit`.
 
-Ok, now it's time to list our containers. 
+Команда `docker ps` показывает все контейнеры, которые в данный момент работают.
 
 The `docker ps` command shows you all containers that are currently running.
 
 * `docker ps`
 
-Expected output:
+Ожидаемый результат:
 
 ```
 CONTAINER ID        IMAGE               COMMAND             CREATED             STATUS              PORTS               NAMES
 ```
-
-Notice that you have no running containers. When you wrote `exit` in the shell, the primary process (`/bin/sh`) stopped. No containers are running, you see a blank line. Let's try a more useful variant, listing all containers, both stopped and started.
+Обратите внимание, что нет работающих контейнеров. После выхода из оболочки `exit`, основной процесс (`/bin/sh`) остановился. Ни один контейнер не запущен, видим пустую строку. Перечислим все контейнеры, как остановленные, так и запущенные.
 
 * `docker ps -a`
 
-Expected output:
+Ожидаемый результат:
 
 ```
-CONTAINER ID        IMAGE               COMMAND                  CREATED             STATUS                      PORTS               NAMES
-36171a5da744        alpine              "/bin/sh"                5 minutes ago       Exited (0) 2 minutes ago                        fervent_newton
-a6a9d46d0b2f        alpine              "echo 'hello from alp"   6 minutes ago       Exited (0) 6 minutes ago                        lonely_kilby
-ff0a5c3750b9        alpine              "ls -l"                  8 minutes ago       Exited (0) 8 minutes ago                        elated_ramanujan
-c317d0a9e3d2        hello-world         "/hello"                 34 seconds ago      Exited (0) 12 minutes ago                       stupefied_mcclintock
+CONTAINER ID   IMAGE         COMMAND                  CREATED          STATUS                            PORTS     NAMES
+9ed317294076   alpine        "/bin/sh"                5 minutes ago    Exited (130) About a minute ago             nervous_dhawan
+4a2a3622537e   alpine        "/bin/sh"                8 minutes ago    Exited (0) 8 minutes ago                    blissful_montalcini
+3e365f16195c   alpine        "echo 'привет от Alp…"   12 minutes ago   Exited (0) 12 minutes ago                   crazy_sutherland
+5892a1ba8f41   alpine        "ls -l"                  17 minutes ago   Exited (0) 17 minutes ago                   hungry_volhard
+fe8d001b3ca6   hello-world   "/hello"                 30 minutes ago   Exited (0) 30 minutes ago                   frosty_shockley
+43e2068450e9   hello-world   "/hello"                 35 minutes ago   Exited (0) 35 minutes ago                   reverent_vaughan
+a59b7f0cdf73   hello-world   "/hello"                 45 minutes ago   Exited (0) 45 minutes ago                   cool_mcnulty
 ```
 
-What you see above is a list of all containers that you ran. Notice that the `STATUS` column shows that these containers exited a few minutes ago.
+Выше вы видите список всех контейнеров, которые вы запускали. Обратите внимание, что в столбце `STATUS` показано, что эти контейнеры завершились несколько минут назад. 
 
 ## Naming your container
 

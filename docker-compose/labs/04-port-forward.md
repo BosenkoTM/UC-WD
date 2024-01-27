@@ -1,4 +1,4 @@
-# A basic webserver
+# Практическое задание 4. Проектирование веб-сервера.
 
 Running arbitrary Linux commands inside a Docker container is fun, but let's do something more useful.
 
@@ -20,9 +20,6 @@ Start a new container from the `nginx` image that exposes port 80 from the conta
 Open a web browser and go to port 8080 on your host. The exact address will depend on how you're running Docker today:
 
 - **Native Linux** - [http://localhost:8080](http://localhost:8080)
-- **Cloud server** - Make sure firewall rules are configured to allow traffic on port 8080. Open browser and use the hostname (or IP) for your server.
-  Ex: [http://inst1.prefix.eficode.academy:8080](http://inst1.prefix.eficode.academy:8080) -
-  Alternatively open a new shell and issue `curl localhost:8080`
 - **Google Cloud Shell** - Open Web Preview (upper right corner)
 
 If you see a webpage saying "Welcome to nginx!" then you're done!

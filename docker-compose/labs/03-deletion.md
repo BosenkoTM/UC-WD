@@ -1,135 +1,126 @@
-# Throw your container away
+# Практическое задание 3. Сборка контейнера.
 
-As containers are just a thin base layer on top of the host kernel, it is really fast to spin up a new instance if you crashed your old one.
+Поскольку контейнеры — это всего лишь тонкий базовый слой поверх ядра хоста, новый экземпляр можно очень быстро развернуть, если поврежден старый.
 
-Let's try to run an alpine container and delete the file system.
+Запустить  контейнер `alpine` и удалить файловую систему.
 
-Spin up the container with `docker run -ti alpine`
-
-and then list all the folders on the root level to see the whole distribution:
+Запустите контейнер с помощью `docker run -ti alpine`, а затем подсчитать количество каталогов в корневом каталоге, чтобы увидеть весь дистрибутив:
 
 ```
 ls /
 ```
 
-Expected output:
+Ожидаемый результат:
 
 ```
 bin    etc    lib    mnt    root   sbin   sys    usr
 dev    home   media  proc   run    srv    tmp    var
 ```
-
-List the current user:
+Список текущего пользователя:
 ``` bash
 whoami
 ```
-Expected output:
+Ожидаемый результат:
 
 ```
 root
 ```
 
-List the current date:
+Проверить текущую дату:
 ``` bash
 date
 ```
 
-Expected output:
+Ожидаемый результат:
 
 ```
-Wed Nov
+Sat Jan 27 21:44:17 UTC 2024
 ```
 
 
-> **Warning:** Make sure that you are inside your container. most likely you can see that by your command promt showing `/ #` instead of `ubuntu@inst1:~/docker-katas/labs$`
+> **Внимание!** Убедитесь, что находитесь внутри контейнера. Это можно увидеть по командной строке, отображающей `/ #` вместо `ubuntu@cloudshell:~/cloudshell_open$`
 
-Now, delete the binaries that the system is build up of with:
+Теперь удалите двоичные файлы, из которых состоит система::
 
 ```
 rm -rf /bin
 ```
+Попробуйте изучить файловую систему, чтобы увидеть, какая часть ОС исчезла:  запустить команды `ls`, `whoami` и `date`.
+Все они должны ответить, что двоичный файл не найден.
 
-Try to navigate around to see how much of the OS is gone: try to run the `ls`, `whoami` and `date` commands.
-They should all echo back that the binary is not found.
-
-Exit out by pressing `Ctrl+d` and create a new instance of the Alpine image and look a bit around:
-
+Выйти из контейнера, нажав `Ctrl+d`, создайте новый экземпляр изображения Alpine:
 ```
 docker run -it alpine
 ```
 
-In the container run:
+Запустить в контейнере команду `ls`:
 
 ```
 ls /
 ```
 
-Expected output:
+Ожидаемый результат:
 
 ```
 bin    etc    lib    mnt    root   sbin   sys    usr
 dev    home   media  proc   run    srv    tmp    var
 ```
 
-Try to perform the same tasks as displayed above to see that you have a fresh new instance ready to go.
+## Автоматическое удаление контейнера после использования
 
-## Auto-remove a container after use
-
-Every time you create a new container, it will take up some space, even though it usually is minimal.
-To see what your containers are taking up of space try to run the `docker container ls -as` command.
+Каждый раз, когда создается новый контейнер, он занимает некоторое пространство, хотя обычно оно минимально.
+Чтобы узнать, сколько места занимают контейнеры, запустить команду `docker container ls -as`.
 
 ```bash
-CONTAINER ID        IMAGE                     COMMAND                  CREATED             STATUS                      PORTS                                                          NAMES               SIZE
-4b09b2fe1d8c        alpine                    "/bin/sh"                7 seconds ago       Exited (1) 1 second ago                                                                    silly_jones         0B (virtual 3.97MB)
+CONTAINER ID   IMAGE         COMMAND                  CREATED             STATUS                         PORTS     NAMES                 SIZE
+2d8c22573d76   alpine        "/bin/sh"                3 minutes ago       Exited (130) 4 seconds ago               friendly_williams     3B (virtual 7.38MB)
 ```
+Здесь видно, что сам образ alpine занимает 7.38MB, а сам контейнер — 3B. Когда манипулируем с файлами в контейнере, размер контейнера увеличится.
 
-Here you can see that the alpine image itself takes 3.97MB, and the container itself takes 0B. When you begin to manipulate files in your container, the size of the container will rise.
-
-If you are creating a lot of new containers eg. to test something, you can tell the Docker daemon to remove the container once stopped with the `--rm` option:
+Если создается множество новых контейнеров, можно указать Docker удалить контейнер после остановки с помощью опции `--rm`:
 `docker run --rm -it alpine`
 
-This will remove the container immediately after it is stopped.
+Это приведет к удалению контейнера сразу после его остановки.
 
-## Cleaning up containers you do not use anymore
+## Очистка контейнеров, которые вы больше не используете
 
-Containers are still persisted, even though they are stopped.
-If you want to delete them from your server you can use the `docker rm` command.
-`docker rm` can take either the `CONTAINER ID` or `NAME` as seen above. 
+Контейнеры по-прежнему сохраняются, даже если они остановлены.
+Чтобы удалить их с сервера, использовать команду `docker rm`.
+`docker rm` может принимать либо `CONTAINER ID`, либо `NAME`, как показано выше.
 
-Try to remove the `hello-world` container:
+Удалить контейнер hello-world:
 
 ```
  docker container ls -a
 ```
 
-Expected output:
+Ожидаемый результат:
 
 ```
-CONTAINER ID        IMAGE                     COMMAND                  CREATED             STATUS                      PORTS                                                          NAMES
-6a9246ff53cb        hello-world               "/hello"                 18 seconds ago      Exited (0) 16 seconds ago                                                                  ecstatic_cray
+CONTAINER ID   IMAGE         COMMAND                  CREATED             STATUS                         PORTS     NAMES
+fe8d001b3ca6   hello-world   "/hello"                 About an hour ago   Exited (0) About an hour ago             frosty_shockley
 ```
 
-Delete the container:
+Удаление контейнера:
 
 ```
-docker container rm ecstatic_cray
+docker container rm frosty_shockley
 ```
 
-The name or ID specified is echoed back:
+Указанное имя или идентификатор возвращается в виде успешного выполнения команды:
 
 ```
-ecstatic_cray
+frosty_shockley
 ```
+Контейнер теперь отсутствует в списке после выполнения команды  `ls -a`.
 
-The container is now gone when you execute a `ls -a` command.
+> :bulb: **Совет:** Как и в случае с Git, для ссылки на него можно использовать любую уникальную часть идентификатора контейнера.
 
-> :bulb: **Tip:** As with Git, you can use any unique part of the container ID to refer to it.
+### Удаление изображений
 
-### Deleting images
+Удален экземпляр контейнера выше, но не сам образ hello-world. Удалим его.
 
-You deleted the container instance above, but not the image of hello-world itself. And as you are now on the verge to become a docker expert, you do not need the hello-world image anymore so let us delete it.
-
-First off, list all the images you have downloaded to your computer:
+Прежде всего, проверьте все образы, которые загружены в облачную среду:
 
 ```
 docker image ls

@@ -1,10 +1,10 @@
 # Практическое задание 7. Создание докер-образа.
 
-Running images others made is useful, but if you want to use docker for your own application, chances are you want to construct an image on your own.
+Запуск готовых докер-образов довольно удобное решение, однако порой требуется создать кастомный образ под конкретное приложене, тогда потребуется создать сборку, в основе которой ключевым объектом является `Dockerfile`.
 
-A [Dockerfile](https://docs.docker.com/engine/reference/builder/) is a text file containing a list of commands that the Docker daemon calls while creating an image. The Dockerfile contains all the information that Docker needs to know to run the app; a base Docker image to run from, location of your project code, any dependencies it has, and what commands to run at start-up.
+[Dockerfile](https://docs.docker.com/engine/reference/builder/) — это текстовый файл, содержащий список команд, которые вызывает  Docker при создании образа. `Dockerfile` содержит всю информацию, которую Docker должен знать для запуска приложения; базовый образ Docker для запуска, расположение кода проекта, любые зависимости, которые он имеет, и какие команды запускать при запуске.
 
-It is a simple way to automate the image creation process. The best part is that the [commands](https://docs.docker.com/engine/reference/builder/) you write in a Dockerfile are _almost_ identical to their equivalent Linux commands. This means you don't really have to learn new syntax to create your own Dockerfiles.
+Это простой способ автоматизировать процесс создания образов. Удобство в том, что [команды](https://docs.docker.com/engine/reference/builder/), которые  в Dockerfile, _почти_ идентичны эквивалентным им командам Linux. Это означает, что  не нужно изучать новый синтаксис для создания собственных файлов `Dockerfile`.
 
 ## Dockerfile commands summary
 

@@ -1,4 +1,4 @@
-# Constructing a docker image
+# Практическое задание 7. Создание образа докера.
 
 Running images others made is useful, but if you want to use docker for your own application, chances are you want to construct an image on your own.
 

@@ -9,8 +9,8 @@
 
 ### Ход работы
 
-— Разверните новый контейнер NGINX: `docker run -d -p 8000:80 nginx`
-- Проверить веб-страницу, убедиться, что NGINX настроен правильно.
+— Развернуть новый контейнер NGINX: `docker run -d -p 8000:80 nginx`
+— Проверить веб-страницу, убедиться, что NGINX настроен правильно.
 
 Войдите в новый контейнер, выполнив оболочку bash внутри контейнера:
 
@@ -29,19 +29,19 @@ docker exec -it CONTAINERNAME bash
 ```
 <!DOCTYPE html>
 
-<html lang="ru">
+<html lang="en">
 
 <head>
 
 <meta charset="UTF-8">
 
-<title> Пример простой страницы html</title>
+<title> Example of a simple html page</title>
 
 </head>
 
 <body>
 
-Пример простой страницы - для того, чтобы посмотреть код, нажмите ctrl + U
+Example of a simple page - to view the code, press ctrl + U
 </body>
 
 </html>
@@ -50,4 +50,4 @@ docker exec -it CONTAINERNAME bash
 - Сохраните и выйдите из nano, нажав: «CTRL + O» и «enter», чтобы сохранить, и «CTRL + X», чтобы выйти из `Nano`.
 – Повторно зайти на страницу, проверить изменения, внесенные на странице.
 
-
+## Задание

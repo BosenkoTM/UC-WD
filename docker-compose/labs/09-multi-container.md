@@ -2,7 +2,7 @@
 
 ## Задача: развернуть сайт Wordpress
 
-Развернуть систему `CMS` под названием `Wordpress`.
+Развернуть систему `CMS`  Wordpress.
 
 > WordPress — это бесплатный инструмент для ведения блогов с открытым исходным кодом и система управления контентом (CMS) на основе PHP и MySQL, работающая на веб-хостинге.
 
@@ -250,20 +250,9 @@ Creating multicontainer_mysql_container_1 ... done
 
 > **примечание**: команда `docker-compose down` удаляет контейнеры и сеть по умолчанию.
 
-### Creating the wordpress container
+### Индивидуальное задание. Создание контейнера WordPress
 
-You now have all the pieces of information to make the Wordpress container. We've copied the run command from before if you can't remember it by heart:
+Развернуть  и настроить систему `CMS`  Wordpress на основе файл [docker-compose_final.yaml](https://github.com/BosenkoTM/UC-WD/blob/main/docker-compose/labs/multi-container/docker-compose_final.yaml).
 
-```bash
-docker run --name wordpress-container --rm --network if_wordpress -e WORDPRESS_DB_HOST=mysql-container -e WORDPRESS_DB_PASSWORD=wordpress -e WORDPRESS_DB_USER=root -e WORDPRESS_DB_NAME=wordpressdb -p 8080:80 -d wordpress:5.7.2-apache
-```
+Выполнить команду docker-compose up -d и зайдите на свой сайт WordPress с [http://IP:8080](http://IP:8080).
 
-You must
-
-- uncomment the `wordpress_container` part of the services section
-- map the pieces of information from the docker container run command to the yaml format.
-- remove MySQL port mapping to close that from outside reach.
-
-When you made that, run `docker-compose up -d` and access your wordpress site from [http://IP:8080](http://IP:8080)
-
-> **Hint**: If you are stuck, look at the file docker-compose_final.yaml in the same folder.

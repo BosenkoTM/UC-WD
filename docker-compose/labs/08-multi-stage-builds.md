@@ -1,4 +1,4 @@
-# Multi Stage Builds
+# Практическое задание 8. Многоэтапные сборки. Мини контейнер Go-приложения..
 
 ## Task: create a tiny go-application container
 
@@ -63,7 +63,7 @@ hello                 golang        5311178b692a   23 seconds ago   805MB
 hello                 multi-stage   ba46dc3143ca   2 minutes ago    7.53MB
 ```
 
-## Bonus Exercise
+## Индивидуальное задание
 
 Since go is a statically compiled language, we can actually use `scratch` as the `base image`.
 The `scratch` image is just an empty file system.

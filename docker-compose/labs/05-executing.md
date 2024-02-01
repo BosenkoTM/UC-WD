@@ -24,7 +24,29 @@ docker exec -it CONTAINERNAME bash
 > :bulb: Из [описания DockerHub](https://hub.docker.com/_/nginx) стандартное размещение HTML-страниц под управлениемт NGINX, находится в /usr/share/nginx/html.
 
 — установите nano в контейнер: `apt-get update && apt-get install -y nano`
-- Отредактируйте `index` html-страницу: `nano /usr/share/nginx/html/index.html`
+- Отредактируйте `index` html-страницу: `nano /usr/share/nginx/html/index.html`:
+
+```
+<!DOCTYPE html>
+
+<html lang="ru">
+
+<head>
+
+<meta charset="UTF-8">
+
+<title> Пример простой страницы html</title>
+
+</head>
+
+<body>
+
+Пример простой страницы - для того, чтобы посмотреть код, нажмите ctrl + U
+</body>
+
+</html>
+```
+    
 - Сохраните и выйдите из nano, нажав: «CTRL + O» и «enter», чтобы сохранить, и «CTRL + X», чтобы выйти из `Nano`.
 – Повторно зайти на страницу, проверить изменения, внесенные на странице.
 

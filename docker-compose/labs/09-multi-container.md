@@ -252,7 +252,7 @@ Creating multicontainer_mysql_container_1 ... done
 
 ### Индивидуальное задание. Создание веб-сайта
 
-Развернуть  и настроить систему `CMS`  Wordpress на основе файл [docker-compose_final.yaml](https://github.com/BosenkoTM/UC-WD/blob/main/docker-compose/labs/multi-container/docker-compose_final.yaml).
+Развернуть  и настроить систему `CMS`  Wordpress на основе [docker-compose_final.yaml](https://github.com/BosenkoTM/UC-WD/blob/main/docker-compose/labs/multi-container/docker-compose_final.yaml).
 
 Выполнить команду docker-compose up -d и зайдите на свой сайт WordPress с [http://IP:8080](http://IP:8080).
 

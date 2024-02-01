@@ -250,7 +250,7 @@ Creating multicontainer_mysql_container_1 ... done
 
 > **примечание**: команда `docker-compose down` удаляет контейнеры и сеть по умолчанию.
 
-### Индивидуальное задание. Создание контейнера WordPress
+### Индивидуальное задание. Создание веб-сайта
 
 Развернуть  и настроить систему `CMS`  Wordpress на основе файл [docker-compose_final.yaml](https://github.com/BosenkoTM/UC-WD/blob/main/docker-compose/labs/multi-container/docker-compose_final.yaml).
 

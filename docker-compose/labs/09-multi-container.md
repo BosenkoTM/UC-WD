@@ -141,62 +141,55 @@ docker stop wordpress-container mysql-container
 Если создавать образы контейнеров для своих служб приложений,  через некоторое время вможет понадобиться писать длинные команды запуска контейнера docker.
 Эти команды, хотя и очень интуитивно понятны, могут оказаться громоздкими для написания, особенно если разрабатывается многоконтейнерные приложения и требуется быстрое развертывание контейнеров.
 
-[Docker Compose](https://docs.docker.com/compose/install/) — это «_инструмент для определения и запуска ваших многоконтейнерных приложений Docker_».
+[Docker Compose](https://docs.docker.com/compose/install/) — это «_инструмент для определения и запуска многоконтейнерных приложений Docker_».
 
-Ваши приложения могут быть определены в файле YAML, в котором определены все параметры, которые вы использовали в `docker run`.
+Приложения могут быть определены в файле `YAML`, в котором определены все параметры, которые используются в `docker run`.
 
-Compose также позволяет вам управлять вашим приложением как единым объектом, а не работать с отдельными контейнерами.
+Compose также позволяет управлять приложением как единым объектом, а не работать с отдельными контейнерами.
 
-Этот файл определяет все контейнеры и настройки, необходимые для запуска набора кластеров. Однако свойства соответствуют тому, как вы используете команды запуска Docker, теперь хранятся в системе контроля версий и доступны вместе с вашим кодом.
+Этот файл определяет все контейнеры и настройки, необходимые для запуска набора кластеров. Однако свойства теперь хранятся в системе контроля версий и доступны вместе с  кодом.
 
-If you have started working with Docker and are building container images for your application services, you most likely have noticed that after a while you may end up writing long `docker container run` commands.
-These commands, while very intuitive, can become cumbersome to write, especially if you are developing a multi-container applications and spinning up containers quickly.
 
-[Docker Compose](https://docs.docker.com/compose/install/) is a “_tool for defining and running your multi-container Docker applications_”.
+## Терминология
 
-Your applications can be defined in a YAML file where all the options that you used in `docker run` are defined.
+- `docker-compose.yml` Файл YAML, в котором хранятся все настройки ваших Docker-контейнеров.
+- `docker-compose` Инструмент командной строки, который позволяет определять и запускать многоконтейнерные приложения с помощью Docker.
 
-Compose also allows you to manage your application as a single entity rather than dealing with individual containers.
+   - `up`: создает и запускает службы, указанные в файле компоновки.
+   - `down`: останавливает и удаляет контейнеры, сети, образы и тома.
+   - `перезапуск`:
+   - `logs`: передает журналы из всех контейнеров в файле компоновки.
+   - `ps`: то же, что и `docker ps`; показывает все контейнеры, которые в данный момент работают.
+   - `rm`: удаляет все контейнеры из данного файла компоновки.
+   - `start`: запускает службы
+   - `stop`: останавливает службы.
 
-This file defines all of the containers and settings you need to launch your set of clusters. The properties map onto how you use the docker run commands, however, are now stored in source control and shared along with your code.
+`Docker Cli` используется при управлении отдельными контейнерами в механизме Docker.
+Это командная строка клиента для доступа к API-интерфейсу демона Docker.
 
-## Terminology
+`Docker-compose cli` вместе с файлами `yaml` можно использовать для управления многоконтейнерным приложением.
 
-- `docker-compose.yml` The YAML file where all your configuration of your docker containers go.
-- `docker-compose` The cli tool that enables you to define and run multi-container applications with Docker
+## Сборка сервиса WordPress
 
-  - `up` : creates and starts the services stated in the compose file
-  - `down` : stops and removes containers, networks, images, and volumes
-  - `restart` :
-  - `logs` : streams the acummulated logs from all the containers in the compose file
-  - `ps` : same as `docker ps`; shows you all containers that are currently running.
-  - `rm` : removes all the containers from the given compose file.
-  - `start` : starts the services
-  - `stop` : stops the services
+Использовать `docker-compose` для запуска  сайта на WordPress.
 
-The docker cli is used when managing individual containers on a docker engine.
-It is the client command line to access the docker daemon api.
+Для этого необходимо:
 
-The docker-compose cli together with the yaml files can be used to manage a multi-container application.
+1. Перенести автонастройку в файл `docker-compose.yaml`.
+1. Вызвать `docker-compose`.
 
-## Compose-erizing your wordpress
+Перейдите в директорию:
 
-So we want to take advantage of docker-compose to run our wordpress site.
+```bash
+cd labs/multi-container
+```
 
-In order to to this we need to:
+Открть файл `docker.compose.yaml` в текстовом редакторе:
 
-1. Transform our setup into a docker-compose.yaml file
-1. Invoke docker-compose and watch the magic happen!
-
-Head over to this labs folder:
-
-`cd labs/multi-container`
-
-Open the file `docker.compose.yaml` with a text editor:
-
-`nano docker-compose.yaml`
-
-You should see something like this:
+```bash
+nano docker-compose.yaml
+```
+Ожидаемый результат:
 
 ```yaml
 version: "3.1"
@@ -211,38 +204,37 @@ services:
     environment:
       MYSQL_ROOT_PASSWORD: wordpress
 ```
+Это шаблон, на основе которого создается файл компоновки:
 
-This is the template we are building our compose file upon so let's drill this one down:
+- `version` указывает, какую версию синтаксиса сборки используем.
+— `services` — это раздел, куда помещаются контейнеры.
+   — «wordpress_container» — это раздел, в котором определяется контейнер WordPress.
+   - `mysql_container` — это раздел, в котором определяется контейнер MySQL.
 
-- `version` indicate what version of the compose syntax we are using
-- `services` is the section where we put our containers
-  - `wordpress_container` is the section where we define our wordpress container
-  - `mysql_container` is the ditto of MySQL.
+> Для получения дополнительной информации о файлах yaml, создаваемых docker, перейдите к [документации](https://docs.docker.com/compose/overview/).
 
-> For more information on docker-compose yaml files, head over to the [documentation](https://docs.docker.com/compose/overview/).
+Часть `services` эквивалентна команде запуска docker-контейнера. Аналогично, есть разделы `network` и `volumes` для тех, которые также соответствуют `docker network create` и `docker volume create`.
 
-The `services` part is equivalent to our `docker container run` command. Likewise there is a `network` and `volumes` section for those as well corresponding to `docker network create` and `docker volume create`.
-
-Let's look the mysql_container part together, making you able to create the other container yourself. Look at the original command we made to spin up the container:
+Рассмотреть часть `mysql_container`, что позволит создать другой контейнер самостоятельно
 
 `docker container run --name mysql-container --rm -p 3306:3306 -e MYSQL_ROOT_PASSWORD=wordpress -e MYSQL_DATABASE=wordpressdb -d mysql:5.7.36`
 
-The command gives out following information: a `name`, a `port` mapping, two `environment` variables and the `image` we want to run.
+Команда выдает следующую информацию: имя, сопоставление порта, две переменные среды и образ, которые требуется запустить.
 
-Now look at the docker-compose example again:
+Объекты `docker-compose`:
 
-- `mysql_container` defines the name of the container
-- `image:wordpress` describes what image the container spins up from.
-- `ports` defines a list of port mappings from host to container
-- `environment` describes the `-e` variable made before in a yaml list
+- `mysql_container` определяет имя контейнера.
+- `image:wordpress` описывает, из какого изображения запускается контейнер.
+- `ports` определяет список сопоставлений портов от хоста к контейнеру.
+- `environment` описывает переменную `-e`, созданную ранее в списке yaml.
 
-Instead of keeping sensitive information in the `docker-compose.yml` file, you can also use an [`.env`](https://docs.docker.com/compose/env-file/) file to keep all the environment variables. That way, it's easier to make a development environment and a production environment with the same `docker-compose.yml`.
+Вместо хранения информации в файле `docker-compose.yml` также можно использовать файл [`.env`](https://docs.docker.com/compose/env-file/), чтобы хранить всю переменные среды. Таким образом, будет проще создать среду разработки и производственную среду с одним и тем же файлом `docker-compose.yml`.
 
 ```conf
 MYSQL_ROOT_PASSWORD=wordpress
 ```
 
-Try to spin up the container in detached mode:
+Развернуть контейнер:
 
 ```bash
 docker-compose up -d
@@ -250,14 +242,13 @@ Creating network "multicontainer_default" with the default driver
 Creating multicontainer_mysql_container_1 ...
 Creating multicontainer_mysql_container_1 ... done
 ```
+Созданы «docker network» с именем «multicontainer_default», а также контейнер MySQL с именем «multicontainer_mysql_container_1».
 
-Looking at the output you can see that it made a `docker network` named `multicontainer_default` as well as the MySQL container named `multicontainer_mysql_container_1`.
+Выполнить команду `docker container ls`, а также `docker network ls`, чтобы увидеть, что и контейнер, и сеть указаны в списке.
 
-Issue a `docker container ls` as well as `docker network ls` to see that both the container and network are listed.
+Чтобы завершить работу контейнера и сети, выполните команду `docker-compose down`.
 
-To shut down the container and network, issue a `docker-compose down`
-
-> **note**: The command docker-compose down removes the containers and default network.
+> **примечание**: команда `docker-compose down` удаляет контейнеры и сеть по умолчанию.
 
 ### Creating the wordpress container
 

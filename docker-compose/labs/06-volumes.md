@@ -1,91 +1,74 @@
-# Docker volumes
+# Практическое задание 6. Докер-том.
 
-> _Hint: This lab only covers volumes on Docker for Linux. If you are on windows or mac, things can look different._
+> _Hint: Задание охватывает только тома Docker для Linux._
 
-Not everything can be in a container. The whole idea is that you can start, stop and delete the containers without losing data.
+Хранение данных лучше выполнять вне контейнера. Идея заключаетсяв том, чтобы запускать, останавливать и удалять контейнеры без потери данных.
 
-So if you need to persist data, do it outside of the containers.
+Существует два способа монтирования данных из вашего контейнера: `bind mounts` и `volumes`.
 
-You have two different ways of mounting data from your container `bind mounts` and `volumes`.
+**A bind mount**. Он принимает путь хоста, например `/data`, и монтирует его внутри вашего контейнера, например. `/opt/app/data`. **A bind mount** хорош тем, что  позволяет подключаться напрямую к файловой системе хоста. Недостатком является то, что нужно указывать путь во время выполнения контейнера, а путь для монтирования может отличаться от хоста к хосту. При использовании привязки вам также придется выполнять резервное копирование, миграцию и т. д. с помощью инструмента вне экосистемы `Docker`.
 
-**A bind mount** is the simpler one to understand. It takes a host path, like `/data`, and mounts it inside your container eg. `/opt/app/data`.
-The good thing about bind mount is that they are easy and allow you to connect directly to the host filesystem.
-The downside is that you need to specify it at runtime, and path to mount might vary from host to host, which can be confusing when you want to run your containers on different hosts.
-With bind mount you will also need to deal with backup, migration etc. in an tool outside the Docker ecosystem.
-
-**A docker Volume** is where you can use a `named` or `unnamed` volume to store the external data. You would normally use a volume driver for this, but you can get a host mounted path using the default local volume driver.
-
-In the next section, you will get to try both of them.
+**Том докера** — это место, где используется том с именем или без имени для хранения внешних данных. Обычно для этого используется драйвер тома, но можно получить путь подключения к хосту, используя драйвер локального тома по умолчанию.
 
 ## Bind mounts
 
-So let's look at the [Nginx](https://hub.docker.com/_/nginx/) container.
-The server itself is of little use, if it cannot access our web content on the host.
+Рассмотрим контейнер [Nginx](https://hub.docker.com/_/nginx/).
+Сам по себе сервер бесполезен, если он не может получить доступ к нашему веб-контенту на хосте.
 
-We need to create a mapping between the host system, and the container with the `-v` command:
+Создать сопоставление между хост-системой и контейнером с помощью команды `-v`:
 
 ```bash
 docker run --name some-nginx -v /some/content:/usr/share/nginx/html:ro -d nginx
 ```
+Это сопоставит все файлы, находящиеся в папке `/some/content` на хосте, с `/usr/share/nginx/html` в контейнере.
 
-That will map whatever files are in the `/some/content` folder on the host to `/usr/share/nginx/html` in the container.
+> Атрибут `:ro` делает том хоста доступным только для чтения, гарантируя, что контейнер не сможет редактировать файлы на хосте.
 
-> The `:ro` attribute is making the host volume read-only, making sure the container can not edit the files on the host.
+## Ход работы
 
-Try to do the following:
-
-- `git clone` this repository down
-  - If you are at training the repository is most likely already cloned on your training VM.
-- Navigate to the `labs/volumes/` directory, which contains a file we can try to serve: `index.html`.
-- We need change `/some/content` to the right path, it must be an absolute path, starting from the root of the filesystem, (which in linux is `/`). You can use the command `pwd` (Print working directory) to display the path to where you are.
-- Now try to run the container with the `labs/volumes` directory bind mounted.
-
-This will give you a nginx server running, serving your static files... _But on which port?_
-
-- Run a `docker ps` command to find out if it has any ports forwarded from the host.
-
-Remember the [past exercise](04-port-forward.md) on port forwarding in Docker.
-
-- Make it host the site on port 8000
+- `git clone` этот репозиторий.
+- Перейдите в каталог `labs/volumes/`, который содержит файл, который требуется использовать сервером Nginx: `index.html`.
+- Изменить `/some/content` на локальный путь, это должен быть абсолютный путь, начиная с корня файловой системы (который в Linux — `/`). Использовать команду `pwd` (вывод пути рабочего каталога).
+- Запустить контейнер с установленной привязкой к каталогу `labs/volume`. Это даст  работающий сервер `Nginx`, обслуживающий статические файлы... _Но на каком порту?_
+- Запусть команду `docker ps`, чтобы узнать, есть ли какие-либо порты, перенаправленные с хоста.
+- Разместить сайт на порт 8000.
 
 <details>
-<summary>How to do this?</summary>
-
-The parameter `-p 8000:80` will map port 80 in the container to port 8000 on the host.
+<summary>Как это сделать?</summary>
+  
+Параметр `-p 8000:80` сопоставит порт 80 в контейнере с портом 8000 на хосте.
 
 </details>
 
-- Check that it is running by navigating to the hostname or IP with your browser, and on port 8000.
-- Stop the container with `docker stop <container_name>`.
+- Перейти на хост или IP-адрес в браузере, указав порт 8000.
+- Остановите контейнер с помощью `docker stop <container_name>`.
 
 ## Volumes
 
-Volumes are entities inside docker, and can be created in three different ways.
+Том — это объект внутри `Docker`, существует три способа их создания:
 
-- By explicitly creating it with the `docker volume create <volume_name>` command
-- By creating a named volume at container creation time with `docker container run -d -v DataVolume:/opt/app/data nginx`
-- By creating an anonymous volume at container creation time with `docker container run -d -v /opt/app/data nginx`
+- Явноу создание, с помощью команды `docker volume create <volume_name>`.
+- Создание именованного тома во время создания контейнера с помощью `docker container run -d -v DataVolume:/opt/app/data nginx`.
+- Создание анонимного тома во время создания контейнера с помощью `docker container run -d -v /opt/app/data nginx`.
 
-First off, lets try to make a data volume called `data`:
+Создать том данных под названием `data:
 
 ```bash
 docker volume create data
 ```
+Docker создает том и выведет имя созданного тома.
 
-Docker creates the volume and outputs the name of the volume created.
-
-If you run `docker volume ls` you will have a list of all the volumes created and their driver:
+Запустить `docker volume ls`:
 
 ```outputs
 DRIVER              VOLUME NAME
 local               data
 ```
+В отличие от монтирования с привязкой, вы не указываете, где на хосте хранятся данные.
 
-Unlike the bind mount, you do not specify where the data is stored on the host.
+В API тома, как и во всех других API Docker, есть команда `inspect`, предоставляющая подробную информацию на низком уровне.
 
-In the volume API, like for almost all other of Docker’s APIs, there is an `inspect` command giving you low level details. 
-
-- run `docker volume inspect data` to see where the data is stored on the host.
+— запустите `docker volume inspect data`, чтобы увидеть, где данные хранятся на хосте.
 
 ```json
 [
@@ -99,12 +82,12 @@ In the volume API, like for almost all other of Docker’s APIs, there is an `in
     }
 ]
 ```
+Том данных смонтирован в `/var/lib/docker/volumes/data/_data` на хосте.
 
-You can see that the `data` volumes is mounted at `/var/lib/docker/volumes/data/_data` on the host.
 
-> **Note** we will not go through the different drivers. For more info look at Dockers own [example](https://docs.docker.com/engine/admin/volumes/volumes/#use-a-volume-driver).
+> **Примечание** Здесь не рассматриваются драйверы. Для получения дополнительной информации посмотрите [example](https://docs.docker.com/engine/admin/volumes/volumes/#use-a-volume-driver).
 
-You can now use this data volume in all containers. Try to mount it to an nginx server with the `docker container run --rm --name www -d -p 8080:80 -v data:/usr/share/nginx/html nginx` command.
+Использовать этот том данных во всех контейнерах. Подключить его к серверу `nginx` с помощью команды `docker container run --rm --name www -d -p 8080:80 -v data:/usr/share/nginx/html nginx`.
 
 > **Note:** If the volume refer to is empty and we provide the path to a directory that contains data in the base image, that data will be copied into the volume.
 

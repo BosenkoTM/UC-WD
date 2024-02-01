@@ -23,7 +23,7 @@
 - Практическое задание 4. [Проектирование веб-сервера](https://github.com/BosenkoTM/UC-WD/blob/main/docker-compose/labs/04-port-forward.md).
 - Практическое задание 5. [Запуск и выполнение процессов в контейнере](https://github.com/BosenkoTM/UC-WD/blob/main/docker-compose/labs/05-executing.md).
 - Практическое задание 6. [Докер-том](https://github.com/BosenkoTM/UC-WD/blob/main/docker-compose/labs/06-volumes.md).
-- Практическое задание 7. [Создание образа докера](https://github.com/BosenkoTM/UC-WD/blob/main/docker-compose/labs/07-building-an-image.md).
+- Практическое задание 7. [Создание докер-образа](https://github.com/BosenkoTM/UC-WD/blob/main/docker-compose/labs/07-building-an-image.md).
 - Практическое задание 8. [Многоэтапные сборки. Мини контейнер Go-приложения.](https://github.com/BosenkoTM/UC-WD/blob/main/docker-compose/labs/08-multi-stage-builds.md).
 - Практическое задание 9. [Многоэтапные сборки. Хостинг сайта Wordpress](https://github.com/BosenkoTM/UC-WD/blob/main/docker-compose/labs/09-multi-container.md).
 

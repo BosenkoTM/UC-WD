@@ -1,6 +1,6 @@
 # Docker Compose
 
-Упражнения в Cloud Shell.От «Hello Docker» к развертыванию контейнерного веб-приложения на сервере.
+Упражнения в Cloud Shell. От «Hello Docker» к развертыванию контейнерного веб-приложения на сервере.
 
 ## Docker в Cloud Shell
 
@@ -17,7 +17,7 @@
 ## Практические работы
 
 - [Введение](labs/00-getting-started.md).
-- Практическое задание 1. [Запуск команд с помощью Docker](https://github.com/BosenkoTM/UC-WD/blob/main/docker-compose/labs/01-hello-world.md).
+- Практическое задание 1. [Запуск команд Docker](https://github.com/BosenkoTM/UC-WD/blob/main/docker-compose/labs/01-hello-world.md).
 - Практическое задание 2. [Запуск контейнера из образа](https://github.com/BosenkoTM/UC-WD/blob/main/docker-compose/labs/02-running-images.md).
 - Практическое задание 3. [Сборка контейнера](https://github.com/BosenkoTM/UC-WD/blob/main/docker-compose/labs/03-deletion.md).
 - Практическое задание 4. [Проектирование веб-сервера](https://github.com/BosenkoTM/UC-WD/blob/main/docker-compose/labs/04-port-forward.md).

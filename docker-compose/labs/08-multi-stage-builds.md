@@ -8,25 +8,26 @@
 
 [Dockerfile](multi-stage-build/Dockerfile) уже создан для в той же папке.
 
-## Exercise
+## Упражнение 8.1
 
-- Try building the image with `docker build`
-- Try to run it with `docker run`.
-- You should see "Hello world!" printed to your terminal.
+- Собрать образ с помощью `docker build`.
+- Запустить его с помощью docker run.
+- Получить в терминале сообщение `Hello world!`.
 
-## Using Multi Stage Builds
+## Использование многоэтапных сборок
 
-The image we built has both the compiler and the compiled binary - which is too much: we only need the binary to run our application.
+Созданный образ содержит и компилятор, и скомпилированный двоичный файл — а это слишком много: двоичный файл нужен только для запуска  приложения.
 
-By utilizing multi-stage builds, we can separate the build stage (compiling) from the image we actually want to ship.
+Используя многоэтапные сборки, можно отделить этап сборки (компиляцию) от образа, который требуется использовать.
 
-## Exercise
+## Упражнение 8.2
 
-- try `docker image ls`.
+- выполнить `docker image ls`.
 
-- Could we make it smaller? We only need the compiler on build-time, since go is a statically compiled language.
+- Возможно ли уменьшение размера контейнера? Компилятор нужен только во время сборки, поскольку go — статически компилируемый язык.
 
-- See the `Dockerfile` below, it has two `build stages`, wherein the latter stage is using the compiled artifact (the binary) from the first:
+- См. «Dockerfile» ниже, он состоит из двух «этапов сборки», причем последний этап использует скомпилированный артефакт (двоичный файл) из первого:
+
 
 ```Dockerfile
 # build stage
@@ -42,24 +43,21 @@ WORKDIR /app
 COPY --from=builder /app/goapp /app/
 ENTRYPOINT ./goapp
 ```
+- Заменить исходный файл Dockerfile на приведенный выше и создать его с другим тегом.
 
-- Replace the original `Dockerfile` with the one above, and try building it with a different tag.
+- При запуске должен напечатать в терминале `Hello world!`.
 
-- When you run it it should still print "Hello world!" to your terminal.
+- Проверить размер контейнера с помощью `docker image ls`.
 
-- Try inspecting the size with `docker image ls`.
-
-- Compare the size of the two images. The latter image should be much smaller, since it's just containing the go-application using `alpine` as the `base image`, and not the entire `golang`-suite of tools.
-
-You can read more about this on: [Use multi-stage builds - docs.docker.com](https://docs.docker.com/develop/develop-images/multistage-build/)
-
-You should see a great reduction in size, like in the example below:
+- Сравните размер двух образов. Последний образ должен быть намного меньше, поскольку он содержит только go-приложение, использует `alpine` в качестве `базового образа`, а не весь набор инструментов `golang`.
 
 ```
 REPOSITORY            TAG           IMAGE ID       CREATED          SIZE
 hello                 golang        5311178b692a   23 seconds ago   805MB
 hello                 multi-stage   ba46dc3143ca   2 minutes ago    7.53MB
 ```
+
+Подробнее здесь: [Использовать многоэтапные сборки ](https://docs.docker.com/develop/develop-images/multistage-build/).
 
 ## Индивидуальное задание
 Поскольку `go` — статически компилируемый язык,  использовать `Scratch` в качестве «базового образа».
@@ -70,7 +68,6 @@ hello                 multi-stage   ba46dc3143ca   2 minutes ago    7.53MB
 
 После сборки нового Dockerfile проверить размер образов.
 Новый образ должен быть меньше, чем образ на основе Alpine!
-
 
 ```Dockerfile
 FROM golang:1.19 as builder

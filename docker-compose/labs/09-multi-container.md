@@ -1,83 +1,81 @@
-# Multi container setups
+# Практическое задание 9. Многоэтапные сборки. Хостинг сайта Wordpress.
 
-## Task: host a Wordpress site
+## Задача: развернуть сайт Wordpress
 
-In this scenario, we are going to deploy the CMS system called Wordpress.
+Развернуть систему `CMS` под названием `Wordpress`.
 
-> WordPress is a free and open source blogging tool and a content management system (CMS) based on PHP and MySQL, which runs on a web hosting service.
+> WordPress — это бесплатный инструмент для ведения блогов с открытым исходным кодом и система управления контентом (CMS) на основе PHP и MySQL, работающая на веб-хостинге.
 
-So we need two containers:
+Требуется два контейнера:
 
-- One container that can serve the Wordpress PHP files
-- One container that can serve as a MySQL database for Wordpress.
+- Один контейнер, который обслуживает PHP-файлы Wordpress.
+— Один контейнер, который служит базой данных MySQL для Wordpress.
 
-Both containers already exists on the dockerhub: [Wordpress](https://hub.docker.com/_/wordpress/) and [Mysql](https://hub.docker.com/_/mysql/).
+Оба контейнера  в DockerHub: [Wordpress](https://hub.docker.com/_/wordpress/) и [Mysql](https://hub.docker.com/_/mysql/).
 
-## Separate containers
 
-To start a mysql container, issue the following command
+## Ход работы
+
+Чтобы запустить контейнер MySQL, введите следующую команду
 
 ```bash
 docker run --name mysql-container --rm -p 3306:3306 -e MYSQL_ROOT_PASSWORD=wordpress -e MYSQL_DATABASE=wordpressdb -d mysql:5.7.36
 ```
 
-Let's recap what this command does:
+- `docker` запускает механизм `docker engine`.
+- `run` сообщает докеру запустить новый контейнер из образа.
+- `--name mysql-container` дает новому контейнеру имя для более удобного обращения.
+- `--rm` сообщает докеру удалить контейнер после его остановки.
+- `-p 3306:3306` подключает порт хоста 3306 к порту контейнера 3306.
+- `-e MYSQL_ROOT_PASSWORD=wordpress` Опция `-e` используется для определенияпеременных среды в контейнере.
+- `-e MYSQL_DATABASE=wordpressdb` обозначает имя базы данных, созданной при запуске MySQL.
+- `-d` запускает контейнер в фоновом режиме.
+- `mysql` сообщает, какой контейнер на самом деле запускать, здесь mysql:latest (:latest — значение по умолчанию, если ничего не указано).
 
-- `docker` invokes the docker engine
-- `run` tells docker to run a new container off an image
-- `--name mysql-container` gives the new container a name for better referencing
-- `--rm` tells docker to remove the container after it is stopped
-- `-p 3306:3306` mounts the host port 3306, to the containers port 3306.
-- `-e MYSQL_ROOT_PASSWORD=wordpress` The `-e` option is used to inject environment variables into the container.
-- `-e MYSQL_DATABASE=wordpressdb` denotes the name of the database created when mysql starts up.
-- `-d` runs the container detached, in the background.
-- `mysql` tells what container to actually run, here mysql:latest (:latest is the default if nothing else is specified)
+MySQL теперь открывает свой порт 3306 на хосте, и каждый может подключиться к нему **поэтому не делайте этого в рабочей среде без соответствующих настроек безопасности**.
 
-MySQL is now exposing it's port 3306 on the host, and everybody can attach to it **so do not do this in production without proper security settings**.
+Подключить WordPress-контейнер к IP-адресу хоста.
 
-We need to connect our wordpress container to the host's IP address.
-You can either use the external IP address of your server, or the DNS name if you are at a training, e.g. `workstation-<num>.<prefix>.eficode.academy`.
-
-After you have noted down the IP, spin up the wordpress container with the host IP as a variable:
+После того, как определен IP-адрес, развернуть контейнер WordPress с IP-адресом хоста в качестве переменной:
 
 ```bash
 docker run --name wordpress-container --rm -e WORDPRESS_DB_HOST=172.17.0.1 -e WORDPRESS_DB_PASSWORD=wordpress -e WORDPRESS_DB_USER=root -e WORDPRESS_DB_NAME=wordpressdb -p 8080:80 -d wordpress:5.7.2-apache
 ```
+Перейти по IP: 8080 и запустить сервер WordPress. Поскольку порт 3306 является портом MySQL по умолчанию, WordPress попытается подключиться к этому порту самостоятельно.
 
-You can now browse to the IP:8080 and have your very own wordpress server running. Since port 3306 is the default MySQL port, wordpress will try to connect on that port by itself.
+- Остановить два контейнера `docker stop wordpress-container mysql-container`
 
-- Stop the two containers again `docker stop wordpress-container mysql-container`
+## Создание контейнерной сети
 
-## Making a container network
+Несмотря на то, что с помощью двух команд выполнили настройку по приведенному выше сценарию, здесь есть некоторые проблемы, которые **НЕОБХОДИМО** исправить:
 
-Even though we in two commands made the setup running in the above scenario, there are some problems here we can fix:
+- требуется знать IP-адрес хоста, чтобы они могли общаться друг с другом.
+- открыть базу данных для внешних подключений.
 
-- We need to know the host IP to get them to talk to each other.
-- And we have exposed the database to the outside world.
+Чтобы подключить несколько докер-контейнеров без привязки их к сетевому интерфейсу хостов, необходимо создать `docker network`.
 
-In order to connect multiple docker containers without binding them to the hosts network interface we need to create a docker network.
+Команда `docker network` обеспечивает безопасное подключение и предоставляет канал для передачи информации из одного контейнера в другой.
 
-The `docker network` command securely connect and provide a channel to transfer information from one container to another.
+Прежде всего создайте новую сеть для связи контейнеров:
 
-First off make a new network for the containers to communicate through:
-
+```bash
 `docker network create if_wordpress`
+```
 
-Docker will return the `networkID` for the newly created network. You can reference it by name as well as the ID.
+Docker вернет `networkID` для вновь созданной сети. Теперь можно ссылаться на него как по имени, так и по идентификатору.
 
-Now you need to connect the two containers to the network, by adding the `--network` option:
+Подключить два контейнера к сети, добавив опцию `--network`:
 
 ```bash
 docker run --name mysql-container --rm --network if_wordpress -e MYSQL_ROOT_PASSWORD=wordpress -e MYSQL_DATABASE=wordpressdb -d mysql:5.7.36
-af38acac52301a7c9689d708e6c3255704cdffb1972bcc245d67b02840983a50
 
 docker run --name wordpress-container --rm --network if_wordpress -e WORDPRESS_DB_HOST=mysql-container -e WORDPRESS_DB_PASSWORD=wordpress -e WORDPRESS_DB_USER=root -e WORDPRESS_DB_NAME=wordpressdb -p 8080:80 -d wordpress:5.7.2-apache
-fd4fd096c064094d7758cefce41d0f1124e78b86623160466973007cf0af8556
 ```
 
-Notice the `WORDPRESS_DB_HOST` env variable. When you make a container join a network, it automatically gets the container name as DNS name as well, making it super easy to make containers discover each other. The DNS name is only visible inside the Docker network, which is also true for the `IP` address (usually an address starting with `172`) that is assigned to them. If you do not expose a port for a container, the container is only visible to Docker.
+Обратить внимание на переменную env `WORDPRESS_DB_HOST`. Когда  подключаете контейнер к сети, он автоматически получает имя контейнера в качестве DNS-имени, что упрощает обнаружение контейнерами друг друга. Имя DNS видно только внутри сети Docker, что также справедливо для назначенного им IP-адреса (обычно адреса, начинающегося с «172»).
 
-You have now deployed both containers into the network. Take a deeper look into the container network by issuing: `docker network inspect if_wordpress`.
+Изучить контейнерную сеть, выполнив команду `docker network Inspect if_wordpress`.
+
 
 ```bash
 docker network inspect if_wordpress
@@ -128,18 +126,28 @@ Expected output:
   }
 ]
 ```
+Поскольку  оба контейнера связаны в одну сеть, теперь к контейнеру WordPress можно получить доступ из браузера по адресу [http://localhost:8080](http://localhost:8080), и настройку WordPress можно легко выполнить. MySQL недоступен извне, поэтому безопасность стала намного лучше, чем раньше.
 
-As, we have linked both the container now wordpress container can be accessed from browser using the address [http://localhost:8080](http://localhost:8080) and setup of wordpress can be done easily. MySQL is not accessible from the outside so security is much better than before.
+### Очистка
 
-### Cleanup
-
-Close both of the containers down by issuing the following command:
+Закройте оба контейнера, выполнив следующую команду:
 
 ```bash
 docker stop wordpress-container mysql-container
 ```
 
-## Using Docker compose
+## Использование Docker Compose
+
+Если создавать образы контейнеров для своих служб приложений,  через некоторое время вможет понадобиться писать длинные команды запуска контейнера docker.
+Эти команды, хотя и очень интуитивно понятны, могут оказаться громоздкими для написания, особенно если разрабатывается многоконтейнерные приложения и требуется быстрое развертывание контейнеров.
+
+[Docker Compose](https://docs.docker.com/compose/install/) — это «_инструмент для определения и запуска ваших многоконтейнерных приложений Docker_».
+
+Ваши приложения могут быть определены в файле YAML, в котором определены все параметры, которые вы использовали в `docker run`.
+
+Compose также позволяет вам управлять вашим приложением как единым объектом, а не работать с отдельными контейнерами.
+
+Этот файл определяет все контейнеры и настройки, необходимые для запуска набора кластеров. Однако свойства соответствуют тому, как вы используете команды запуска Docker, теперь хранятся в системе контроля версий и доступны вместе с вашим кодом.
 
 If you have started working with Docker and are building container images for your application services, you most likely have noticed that after a while you may end up writing long `docker container run` commands.
 These commands, while very intuitive, can become cumbersome to write, especially if you are developing a multi-container applications and spinning up containers quickly.

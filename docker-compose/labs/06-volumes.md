@@ -89,102 +89,96 @@ local               data
 
 Использовать этот том данных во всех контейнерах. Подключить его к серверу `nginx` с помощью команды `docker container run --rm --name www -d -p 8080:80 -v data:/usr/share/nginx/html nginx`.
 
-> **Note:** If the volume refer to is empty and we provide the path to a directory that contains data in the base image, that data will be copied into the volume.
+> **Примечание.** Если указанный том пуст, указываем путь к каталогу, содержащему данные базового образа, эти данные будут скопированы в том.
 
-Try now to look at the data stored in `/var/lib/docker/volumes/data/_data` on the host:
+Просмотреть данные, хранящиеся в `/var/lib/docker/volumes/data/_data` на хосте:
 
 ```
 sudo ls /var/lib/docker/volumes/data/_data/
 ```
 
-Expected output:
+Ожидаемый результат:
 
 ```
 50x.html  index.html
 ```
+Эти два файла взяты из образа Nginx и являются стандартными файлами веб-сервера.
 
-Those two files comes from the Nginx image and is the standard files the webserver has.
+### Монтирование нескольких контейнеров к тому
 
-### Attaching multiple containers to a volume
+К одному и тому же тому с данными можно подключить несколько контейнеров.
 
-Multiple containers can attach to the same volume with data. 
+Docker не обрабатывает блокировку файлов, поэтому приложения должны сами учитывать блокировку файлов.
 
-Docker doesn't handle any file locking, so applications must account for the file locking themselves.
+Создать новую HTML-страницу не сервере nginx.
 
+Создать контейнер Ubuntu, в котором том `data` прикреплен к `/tmp`, а затем создаём новый html-файл с помощью команды `echo`:
 
-Let's try to go in and make a new html page for nginx to serve. 
-
-We do this by making a new ubuntu container that has the `data` volume attached to `/tmp`, and thereafter create a new html file with the `echo` command:
-
-Start the container:
+Запустите контейнер:
 
 ```
 docker run -it --rm -v data:/tmp ubuntu bash
 ```
 
-In the container run:
+В контейнере запустить:
 
 ```
 echo "<html><h1>hello world</h1></html>" > /tmp/hello.html
 ```
 
-Verify the file was created by running in the container:
+Убедиться, что файл был создан в контейнере:
 
 ```
 ls /tmp
 ```
 
-Expected output:
+Ожидаемый результат:
 
 ```
 hello.html  50x.html  index.html
 ```
+Перейти на веб-страницу по адресу:: `http://<IP>:8080/hello.html`
 
-Head over to your newly created webpage at: `http://<IP>:8080/hello.html`
+## Очистка
 
-## cleanup
+Выйдите из вашего сервера Ubuntu и выполните `docker stop www`, чтобы остановить контейнер nginx.
 
-Exit out of your ubuntu server and execute a `docker stop www` to stop the nginx container.
-
-Run a `docker ps` to make sure that no other containers are running.
+Запустите `docker ps`, чтобы убедиться, что другие контейнеры не запущены.
 
 ```
 docker ps
 ```
 
-Expected output:
+Ожидаемый результат:
 
 ```
 CONTAINER ID        IMAGE                     COMMAND                  CREATED             STATUS              PORTS                                                          NAMES
 ```
+Том данных по-прежнему присутствует и будет там до тех пор, пока не удалитm его с помощью `docker volume rm data` или не выполните общую очистку всех неиспользуемых томов, запустив `docker volume prune`.
 
-The data volume is still present, and will be there until you remove it with a `docker volume rm data` or make a general cleanup of all the unused volumes by running `docker volume prune`.
+## Лайфхак
 
-## Tips and tricks
+Флаг `-v` может как создать привязку, так и присваивает имя тому в зависимости от синтаксиса. Если первый аргумент начинается с / или ~/, создается привязка. Удалив эти символы, можно присвоить имя тому. Например:
 
-As you have seen, the `-v` flag can both create a bind mount or name a volume depending on the syntax. If the first argument begins with a / or ~/ you're creating a bind mount. Remove that, and you're naming the volume. For example:
+- `-v /path:/path/in/container` монтирует каталог хоста, `/path` в `/path/in/container`
+- `-v path:/path/in/container` создает том с именем path, не имеющий отношения к хосту.
 
-- `-v /path:/path/in/container` mounts the host directory, `/path` at the `/path/in/container`
-- `-v path:/path/in/container` creates a volume named path with no relationship to the host.
+### Обмен данными
 
-### Sharing data
+Если требуется использовать том совместно или связать монтирование между двумя контейнерами, используется опция `--volumes-from` для второго контейнера. Параметр сопоставляет тома из исходного контейнера с запускаемым контейнером.
 
-If you want to share volumes or bind mount between two containers, then use the `--volumes-from` option for the second container. The parameter maps the mapped volumes from the source container to the container being launched.
 
-## More advanced docker commands
+## Продвинутые команды докера
 
-Before you go on, use the [Docker command line interface](https://docs.docker.com/engine/reference/commandline/cli/) documentation to try a few more commands:
+Прежде чем продолжить, воспользуйтесь документацией [Интерфейс командной строки Docker](https://docs.docker.com/engine/reference/commandline/cli/), чтобы проверить несколько команд:
 
-- While your detached container is running, use the `docker ps` command to see what silly name Docker gave your container. **This is one command you're going to use often!**
-- While your detached container is still running, look at its logs. Try following its logs and refreshing your browser.
-- Stop your detached container, and confirm that it is stopped with the `ps` command.
-- Start it again, wait 10 seconds for it to fire up, and stop it again.
-- Then delete that container from your system.
+- Пока отсоединенный контейнер работает, используйте команду `docker ps`, чтобы увидеть, какое имя Docker дал вашему контейнеру. **Эту команду  часто используют!**
+- Пока отсоединенный контейнер  работает, просмотрите его журналы. Просмотреть его журналы и обновить браузер.
+- Остановите отсоединенный контейнер и проверьте его остановку с помощью команды `ps`.
+- Запустите его снова, подождите 10 секунд, и снова остановите его.
+- Затем удалите этот контейнер из вашей системы.
 
-> **NOTE:** When running most docker commands, you only need to specify the first few characters of a container's ID. For example, if a container has the ID `df4fd19392ba`, you can stop it with `docker stop df4`. You can also use the silly names Docker provides containers by default, such as `boring_bardeen`.
+> **ПРИМЕЧАНИЕ.** При запуске большинства команд Docker требуется указать только первые несколько символов идентификатора контейнера. Например, если контейнер имеет идентификатор `df4fd19392ba`, можно остановить его с помощью docker stop df4. Можно использовать нелепые имена для контейнеров, которые Docker предоставляет контейнерам по умолчанию.
 
-If you want to read more, I recommend [Digital Oceans](https://www.digitalocean.com/community/tutorials/how-to-share-data-between-docker-containers) guides to sharing data through containers, as well as Dockers own article about [volumes](https://docs.docker.com/engine/admin/volumes).
+Узнать больше  по совместному использованию данных через контейнеры можно по линку [Digital Oceans](https://www.digitalocean.com/community/tutorials/how-to-share-data-between-docker-containers).
 
-## summary
-
-Now you have tried to bind volumes to a container to connect the host to the container.

@@ -1,14 +1,12 @@
 # Практическое задание 8. Многоэтапные сборки. Мини контейнер Go-приложения.
 
-## Task: create a tiny go-application container
+## Задача: создать мини контейнер go-приложения.
 
-In [multi-stage-build/hello.go](multi-stage-build/hello.go) we have created a small go application that prints `hello world` to your terminal.
+В [multi-stage-build/hello.go](https://github.com/BosenkoTM/UC-WD/tree/main/docker-compose/labs/multi-stage-build) создано приложение go, которое выводит `hello world`.
 
-You want to containerize it - that's easy!
+Использовать «базовый образ», в котором есть go!
 
-You don't even have to have go installed, because you can just use a `base image` that has go!
-
-The [Dockerfile](multi-stage-build/Dockerfile) is already created for you in the same folder.
+[Dockerfile](multi-stage-build/Dockerfile) уже создан для в той же папке.
 
 ## Exercise
 
@@ -64,15 +62,14 @@ hello                 multi-stage   ba46dc3143ca   2 minutes ago    7.53MB
 ```
 
 ## Индивидуальное задание
+Поскольку `go` — статически компилируемый язык,  использовать `Scratch` в качестве «базового образа».
+Образ `scratch` — это просто пустая файловая система.
 
-Since go is a statically compiled language, we can actually use `scratch` as the `base image`.
-The `scratch` image is just an empty file system.
+Подсказка: образ «с нуля» не имеет оболочки, поэтому в Dockerfile  _также_ необходимо изменить `ENTRYPOINT` с `shell form` на `exec form`.
+См.: `ENTRYPOINT` в [справке по Dockerfile] (https://docs.docker.com/engine/reference/builder/).
 
-Hint: the "scratch" image has no shell, so in the Dockerfile you _also_ need to change the `ENTRYPOINT` from `shell form` to `exec form`.
-See: `ENTRYPOINT` under [Dockerfile reference](https://docs.docker.com/engine/reference/builder/).
-
-After building with your new Dockerfile, inspect the size of the images.
-Your new image should be even smaller than the alpine-based image!
+После сборки нового Dockerfile проверить размер образов.
+Новый образ должен быть меньше, чем образ на основе Alpine!
 
 
 ```Dockerfile
